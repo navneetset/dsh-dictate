@@ -19,6 +19,8 @@ const inject = ["webServer", "commands"];
 
 const Config = z.object({
 	apiKeyEnv: z.string().default("OPENROUTER_API_KEY"),
+	/** Plain-value fallback for deployments that can't set the env var; prefer apiKeyEnv. */
+	apiKey: z.string().default(""),
 	endpoint: z.string().default("https://openrouter.ai/api/v1/audio/transcriptions"),
 	routePath: z.string().default("/dictate/transcribe"),
 	maxAudioBytes: z.natural().default(25_000_000),
@@ -59,9 +61,9 @@ async function handle(ctx, cfg, req, res) {
 		sendJson(res, 405, { error: "POST audio segments to this route." });
 		return;
 	}
-	const apiKey = process.env[cfg.apiKeyEnv];
+	const apiKey = cfg.apiKey || process.env[cfg.apiKeyEnv];
 	if (!apiKey) {
-		sendJson(res, 503, { error: `Missing OpenRouter API key: set the ${cfg.apiKeyEnv} environment variable and restart dsh web.` });
+		sendJson(res, 503, { error: `Missing OpenRouter API key: set the ${cfg.apiKeyEnv} environment variable and restart dsh web (or set the dictate apiKey config).` });
 		return;
 	}
 	let raw;
@@ -119,6 +121,7 @@ async function handle(ctx, cfg, req, res) {
 function apply(ctx, config) {
 	const cfg = {
 		apiKeyEnv: config?.apiKeyEnv ?? "OPENROUTER_API_KEY",
+		apiKey: config?.apiKey ?? "",
 		endpoint: config?.endpoint ?? "https://openrouter.ai/api/v1/audio/transcriptions",
 		routePath: config?.routePath ?? "/dictate/transcribe",
 		maxAudioBytes: config?.maxAudioBytes ?? 25_000_000,
