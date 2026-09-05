@@ -11,7 +11,7 @@ Transcription runs on **OpenRouter's STT endpoint** (`/api/v1/audio/transcriptio
 Requires dsh ≥ 0.1.1-rc.1 and a running `dsh web` profile.
 
 ```sh
-# from npm (after publish)
+# from npm
 dsh plugin --profile web add dsh-plugin-dictate
 
 # or straight from this repo
