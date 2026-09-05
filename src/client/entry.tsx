@@ -5,7 +5,9 @@
  * mic button into the composer's left tool-row slot. `inject` declares the
  * guarded services this plugin reads.
  */
+import { controller } from "./controller";
 import { MicButton } from "./mic-button";
+import { prefs } from "./prefs";
 
 export const inject = ["slots"];
 
@@ -21,7 +23,10 @@ export function apply(ctx) {
 	} catch (error) {
 		console.warn("[dsh-dictate] could not register the mic button:", error?.message ?? error);
 	}
+	// Console-debug surface: __dshDictate.state / .inserter('text') / .prefs
+	window.__dshDictate = { controller, prefs };
 	return () => {
+		delete window.__dshDictate;
 		for (const dispose of disposers) {
 			if (typeof dispose === "function") dispose();
 		}
