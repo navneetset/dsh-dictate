@@ -1,0 +1,7 @@
+# dsh-plugin-dictate bundle patch: mount the host plugin.
+# The row's package carries a `dsh.client` declaration, so this single row
+# activates both halves: the host plugin (route + command) and the browser
+# bundle (mic button + settings popover) picked up by the client-modules scan.
+- insert:
+    - id: dictate
+      name: dsh-plugin-dictate
