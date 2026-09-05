@@ -2,7 +2,28 @@
 
 Live speech-to-text dictation for the [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) **web UI**. Click the microphone button in the composer tool row, speak, and your words appear in the prompt as you talk — mixable with normal typing, at your cursor, without touching what you already wrote.
 
+![Mic button in the dsh composer](docs/screenshot-composer.png)
+
 Transcription runs on **OpenRouter's STT endpoint** (`/api/v1/audio/transcriptions`). The API key stays server-side: the browser only POSTs audio segments to a local route this plugin registers inside dsh.
+
+## Install
+
+Requires dsh ≥ 0.1.1-rc.1 and a running `dsh web` profile.
+
+```sh
+# from npm (after publish)
+dsh plugin --profile web add dsh-plugin-dictate
+
+# or straight from this repo
+dsh plugin --profile web add https://github.com/navneetset/dsh-dictate.git
+
+# or a local checkout (link: — edits + rebuild show up on next restart)
+dsh plugin --profile web add /path/to/dsh-dictate
+```
+
+`dsh plugin add` installs the package into the profile and appends it to the profile's bundle list, so **one command activates both halves** (host route + browser mic button). If pnpm complains about the workspace root (first-time setup on some profiles), add `-w` right after `add`. Restart `dsh web` and reload the page. Updating later: re-run the same `add` command to resolve the latest version.
+
+![Settings popover — right-click the mic](docs/screenshot-settings.png)
 
 ## Features
 
@@ -12,23 +33,6 @@ Transcription runs on **OpenRouter's STT endpoint** (`/api/v1/audio/transcriptio
 - **Right-click the mic** for settings: mode, STT model, dictation language, hotkey. Stored per browser in `localStorage`, sent per request — nothing else to configure.
 - **Default model**: `openai/gpt-4o-mini-transcribe` (cheap, fast). Also good: `openai/gpt-4o-transcribe` (best accuracy), `openai/whisper-large-v3` (strongest multilingual, notably Dutch).
 - `/dictate` slash command prints a status/usage summary.
-
-## Install
-
-Requires dsh ≥ 0.1.1-rc.1 and a running `dsh web` profile.
-
-```sh
-# from a git repo
-dsh plugin --profile web add https://github.com/<you>/dsh-dictate.git
-
-# or a local checkout (link: — edits + rebuild show up on next restart)
-dsh plugin --profile web add /path/to/dsh-dictate
-
-# or from npm once published
-dsh plugin --profile web add dsh-plugin-dictate
-```
-
-`dsh plugin add` installs the package into the profile and appends it to the profile's bundle list, so **one command activates both halves** (host route + browser mic button). If pnpm complains about the workspace root (first-time setup on some profiles), add `-w` right after `add`. Restart `dsh web` and reload the page.
 
 ## API key
 

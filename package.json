@@ -2,6 +2,18 @@
   "name": "dsh-plugin-dictate",
   "description": "Live speech-to-text dictation into the dsh web composer via OpenRouter STT",
   "version": "0.1.0",
+  "author": {
+    "name": "navneetset",
+    "url": "https://github.com/navneetset"
+  },
+  "homepage": "https://github.com/navneetset/dsh-dictate#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/navneetset/dsh-dictate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/navneetset/dsh-dictate/issues"
+  },
   "type": "module",
   "main": "lib/index.js",
   "exports": {
